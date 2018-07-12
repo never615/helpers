@@ -1,0 +1,17 @@
+<?php
+
+namespace DummyNamespace;
+
+use Mallto\Admin\Data\Traits\BaseModel;
+DummyImportSoftDeletesTrait
+
+class DummyClass extends BaseModel
+{
+    DummyUseSoftDeletesTrait
+
+    DummyModelTable
+
+    DummyModelKey
+
+    DummyTimestamp
+}

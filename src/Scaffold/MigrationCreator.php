@@ -3,6 +3,7 @@
 namespace Encore\Admin\Helpers\Scaffold;
 
 use Illuminate\Database\Migrations\MigrationCreator as BaseMigrationCreator;
+use Illuminate\Filesystem\Filesystem;
 
 class MigrationCreator extends BaseMigrationCreator
 {
@@ -11,8 +12,10 @@ class MigrationCreator extends BaseMigrationCreator
      */
     protected $bluePrint = '';
 
+
+
     /**
-     * Create a new model.
+     * Create a new migration file.
      *
      * @param string    $name
      * @param string    $path
@@ -20,10 +23,13 @@ class MigrationCreator extends BaseMigrationCreator
      * @param bool|true $create
      *
      * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function create($name, $path, $table = null, $create = true)
     {
         $this->ensureMigrationDoesntAlreadyExist($name);
+
+        $path = base_path($path);
 
         $path = $this->getPath($name, $path);
 
@@ -31,7 +37,7 @@ class MigrationCreator extends BaseMigrationCreator
 
         $this->files->put($path, $this->populateStub($name, $stub, $table));
 
-        $this->firePostCreateHooks();
+        $this->firePostCreateHooks($table);
 
         return $path;
     }

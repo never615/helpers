@@ -4,12 +4,12 @@ namespace Encore\Admin\Helpers\Scaffold;
 
 class ControllerCreator
 {
-    /**
-     * Controller full name.
-     *
-     * @var string
-     */
-    protected $name;
+//    /**
+//     * Controller full name.
+//     *
+//     * @var string
+//     */
+//    protected $name;
 
     /**
      * The filesystem instance.
@@ -17,103 +17,85 @@ class ControllerCreator
      * @var \Illuminate\Filesystem\Filesystem
      */
     protected $files;
+    private $controllerNamespace;
+    private $controllerPath;
+    private $config;
 
     /**
      * ControllerCreator constructor.
      *
-     * @param string $name
-     * @param null   $files
+     * @param      $config
+     * @param null $files
      */
-    public function __construct($name, $files = null)
+    public function __construct($config, $files = null)
     {
-        $this->name = $name;
-
         $this->files = $files ?: app('files');
+        $this->controllerNamespace = $config->controller_namespace;
+        $this->controllerPath = $config->controller_path;
+
+        $this->config = $config;
     }
 
     /**
      * Create a controller.
      *
-     * @param string $model
+     * @param string $tableName
      *
      * @throws \Exception
      *
      * @return string
      */
-    public function create($model)
+    public function create($tableName)
     {
-        $path = $this->getpath($this->name);
+        $controllerClassName = studly_case(camel_case(str_singular($tableName)))."Controller";
+        $modelClassName = studly_case(camel_case(str_singular($tableName)));
+        $path = $this->getpath($controllerClassName);
 
         if ($this->files->exists($path)) {
-            throw new \Exception("Controller [$this->name] already exists!");
+            throw new \Exception("Controller [$controllerClassName] already exists!");
         }
 
         $stub = $this->files->get($this->getStub());
 
-        $this->files->put($path, $this->replace($stub, $this->name, $model));
+        $this->files->put($path, $this->replace($stub, $controllerClassName, $modelClassName, $tableName));
 
         return $path;
     }
 
     /**
      * @param string $stub
-     * @param string $name
-     * @param string $model
+     * @param string $controllerNameClass
+     * @param string $modelNameClass
      *
+     * @param        $tableName
      * @return string
      */
-    protected function replace($stub, $name, $model)
+    protected function replace($stub, $controllerNameClass, $modelNameClass, $tableName)
     {
-        $stub = $this->replaceClass($stub, $name);
-
         return str_replace(
-            ['DummyModelNamespace', 'DummyModel'],
-            [$model, class_basename($model)],
+            ['DummyModelNamespace', 'DummyModel', 'DummyClass', 'DummyNamespace', 'DummyName'],
+            [
+                $this->config->model_namespace.'\\'.class_basename($modelNameClass),
+                class_basename($modelNameClass),
+                $controllerNameClass,
+                $this->controllerNamespace,
+                $tableName,
+            ],
             $stub
         );
     }
 
-    /**
-     * Get controller namespace from giving name.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function getNamespace($name)
-    {
-        return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)), '\\');
-    }
-
-    /**
-     * Replace the class name for the given stub.
-     *
-     * @param string $stub
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function replaceClass($stub, $name)
-    {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
-
-        return str_replace(['DummyClass', 'DummyNamespace'], [$class, $this->getNamespace($name)], $stub);
-    }
 
     /**
      * Get file path from giving controller name.
      *
-     * @param $name
+     * @param $modelClassName
      *
      * @return string
      */
-    public function getPath($name)
+    public function getPath($modelClassName)
     {
-        $segments = explode('\\', $name);
-
-        array_shift($segments);
-
-        return app_path(implode('/', $segments)).'.php';
+        return base_path($this->controllerPath."/".$modelClassName.'.php');
     }
 
     /**
@@ -123,6 +105,6 @@ class ControllerCreator
      */
     public function getStub()
     {
-        return __DIR__.'/stubs/controller.stub';
+        return __DIR__.'/stubs/controller2.stub';
     }
 }

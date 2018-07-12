@@ -13,12 +13,12 @@ class ModelCreator
      */
     protected $tableName;
 
-    /**
-     * Model name.
-     *
-     * @var string
-     */
-    protected $name;
+//    /**
+//     * Model name.
+//     *
+//     * @var string
+//     */
+//    protected $name;
 
     /**
      * The filesystem instance.
@@ -26,25 +26,46 @@ class ModelCreator
      * @var \Illuminate\Filesystem\Filesystem
      */
     protected $files;
+    private $namespace;
+    private $path;
+    private $modelClassName;
+
+//    /**
+//     * ModelCreator constructor.
+//     *
+//     * @param string $tableName
+//     * @param string $name
+//     * @param null   $files
+//     */
+//    public function __construct($tableName, $name, $files = null)
+//    {
+//        $this->tableName = $tableName;
+//
+//        $this->name = $name;
+//
+//        $this->files = $files ?: app('files');
+//    }
 
     /**
      * ModelCreator constructor.
      *
      * @param string $tableName
-     * @param string $name
+     * @param        $config
      * @param null   $files
      */
-    public function __construct($tableName, $name, $files = null)
+    public function __construct($tableName, $config, $files = null)
     {
         $this->tableName = $tableName;
-
-        $this->name = $name;
-
         $this->files = $files ?: app('files');
+        $this->namespace = $config->model_namespace;
+        $this->path = $config->model_path;
+
+        //model class name 根据tableName按照一定规则自动生成
+        $this->modelClassName = studly_case(camel_case(str_singular($this->tableName)));
     }
 
     /**
-     * Create a new migration file.
+     * Create a new model.
      *
      * @param string     $keyName
      * @param bool|true  $timestamps
@@ -56,18 +77,18 @@ class ModelCreator
      */
     public function create($keyName = 'id', $timestamps = true, $softDeletes = false)
     {
-        $path = $this->getpath($this->name);
+        $path = $this->getpath();
 
         if ($this->files->exists($path)) {
-            throw new \Exception("Model [$this->name] already exists!");
+            throw new \Exception("Model [$this->modelClassName] already exists!");
         }
 
         $stub = $this->files->get($this->getStub());
 
-        $stub = $this->replaceClass($stub, $this->name)
-            ->replaceNamespace($stub, $this->name)
+        $stub = $this->replaceClass($stub, $this->modelClassName)
+            ->replaceNamespace($stub, $this->namespace)
             ->replaceSoftDeletes($stub, $softDeletes)
-            ->replaceTable($stub, $this->name)
+            ->replaceTable($stub, $this->modelClassName)
             ->replaceTimestamp($stub, $timestamps)
             ->replacePrimaryKey($stub, $keyName)
             ->replaceSpace($stub);
@@ -84,13 +105,14 @@ class ModelCreator
      *
      * @return string
      */
-    public function getPath($name)
+    public function getPath()
     {
-        $segments = explode('\\', $name);
-
-        array_shift($segments);
-
-        return app_path(implode('/', $segments)).'.php';
+        return base_path($this->path."/".$this->modelClassName.'.php');
+//        $segments = explode('\\', $name);
+//
+//        array_shift($segments);
+//
+//        return app_path(implode('/', $segments)).'.php';
     }
 
     /**
@@ -115,7 +137,8 @@ class ModelCreator
      */
     protected function replaceClass(&$stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+//        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = $name;
 
         $stub = str_replace('DummyClass', $class, $stub);
 
@@ -126,14 +149,18 @@ class ModelCreator
      * Replace namespace dummy.
      *
      * @param string $stub
-     * @param string $name
+     * @param string $nameSpace
      *
      * @return $this
      */
-    protected function replaceNamespace(&$stub, $name)
+    protected function replaceNamespace(&$stub, $nameSpace)
     {
+//        $stub = str_replace(
+//            'DummyNamespace', $this->getNamespace($nameSpace), $stub
+//        );
+
         $stub = str_replace(
-            'DummyNamespace', $this->getNamespace($name), $stub
+            'DummyNamespace', $nameSpace, $stub
         );
 
         return $this;
@@ -182,13 +209,14 @@ class ModelCreator
      * Replace Table name dummy.
      *
      * @param string $stub
-     * @param string $name
+     * @param string $modelClassName
      *
      * @return $this
      */
-    protected function replaceTable(&$stub, $name)
+    protected function replaceTable(&$stub, $modelClassName)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+//        $class = str_replace($this->getNamespace($modelClassName).'\\', '', $modelClassName);
+        $class = $modelClassName;
 
         $table = Str::plural(strtolower($class)) !== $this->tableName ? "protected \$table = '$this->tableName';\n" : '';
 
@@ -233,6 +261,6 @@ class ModelCreator
      */
     public function getStub()
     {
-        return __DIR__.'/stubs/model.stub';
+        return __DIR__.'/stubs/model2.stub';
     }
 }

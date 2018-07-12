@@ -11,57 +11,193 @@
 
                 <div class="form-horizontal">
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label for="inputTableName" class="col-sm-1 control-label">Table name</label>
+                        <label for="inputTableName" class="col-sm-1 control-label">Table name</label>
 
-                    <div class="col-sm-4">
-                        <input type="text" name="table_name" class="form-control" id="inputTableName" placeholder="table name" value="{{ old('table_name') }}">
-                    </div>
+                        <div class="col-sm-4">
+                            <input type="text" name="table_name" class="form-control" id="inputTableName" placeholder="table name" value="{{ old('table_name') }}">
+                        </div>
 
-                    <span class="help-block hide" id="table-name-help">
+                        <span class="help-block hide" id="table-name-help">
                         <i class="fa fa-info"></i>&nbsp; Table name can't be empty!
                     </span>
-
-                </div>
-                <div class="form-group">
-                    <label for="inputModelName" class="col-sm-1 control-label">Model</label>
-
-                    <div class="col-sm-4">
-                        <input type="text" name="model_name" class="form-control" id="inputModelName" placeholder="model" value="{{ old('model_name', "App\\Models\\") }}">
                     </div>
-                </div>
+                    {{--<div class="form-group">--}}
+                    {{--<label for="inputModelName" class="col-sm-1 control-label">Model</label>--}}
 
-                <div class="form-group">
-                    <label for="inputControllerName" class="col-sm-1 control-label">Controller</label>
+                    {{--<div class="col-sm-4">--}}
+                    {{--<input type="text" name="model_name" class="form-control" id="inputModelName" placeholder="model" value="{{ old('model_name', "App\\Models\\") }}">--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
 
-                    <div class="col-sm-4">
-                        <input type="text" name="controller_name" class="form-control" id="inputControllerName" placeholder="controller" value="{{ old('controller_name', "App\\Admin\\Controllers\\") }}">
-                    </div>
-                </div>
+                    {{--<div class="form-group">--}}
+                    {{--<label for="inputControllerName" class="col-sm-1 control-label">Controller</label>--}}
 
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-11">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" checked value="migration" name="create[]" /> Create migration
-                            </label>
-                            <label>
-                                <input type="checkbox" checked value="model" name="create[]" /> Create model
-                            </label>
-                            <label>
-                                <input type="checkbox" checked value="controller" name="create[]" /> Create controller
-                            </label>
-                            <label>
-                                <input type="checkbox" checked value="migrate" name="create[]" /> Run migrate
-                            </label>
+                    {{--<div class="col-sm-4">--}}
+                    {{--<input type="text" name="controller_name" class="form-control" id="inputControllerName" placeholder="controller" value="{{ old('controller_name', "App\\Admin\\Controllers\\") }}">--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+
+
+                    <div class="form-group">
+
+                        <label for="inputConfigId" class="col-sm-1 control-label">Config</label>
+
+                        <div class="col-sm-4">
+                            <input type="hidden" name="config_id" class="form-control" id="inputConfigId" value="{{ old('config_id') }}">
+                            <select class="form-control config_id select2-hidden-accessible" style="width: 100%;" name="config_id" tabindex="-1" aria-hidden="true" value="{{ old('config_id') }}">
+                                {{--<option selected="" value=""></option>--}}
+                                @foreach($configs as $configs)
+                                    <option value="{{$configs}}" >{{$configs}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                </div>
+
+                    {{--<div class="form-group">--}}
+
+                        {{--<label for="inputTemplateId" class="col-sm-1 control-label">Template</label>--}}
+
+                        {{--<div class="col-sm-4">--}}
+                            {{--<input type="hidden" name="template_id" class="form-control" id="inputTemplateId" value="{{ old('template_id') }}">--}}
+                            {{--<select class="form-control template_id select2-hidden-accessible" style="width: 100%;" name="template_id" tabindex="-1" aria-hidden="true" value="{{ old('template_id') }}">--}}
+                                {{--<option selected="" value=""></option>--}}
+                                {{--@foreach($templates as $templateKey=>$templateValue)--}}
+                                    {{--<option value="{{$templateKey}}" >{{$templateValue}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-11">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" checked value="migration" name="create[]"/> Create migration
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked value="model" name="create[]"/> Create model
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked value="controller" name="create[]"/> Create
+                                    controller
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked value="migrate" name="create[]"/> Run migrate
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
-                <hr />
+                <hr/>
+
+                <div class="form-horizontal">
+
+                    <h4>Permission</h4>
+
+                    <div class="form-group">
+
+                        <label for="inputPermissionParentId" class="col-sm-1 control-label">Parent</label>
+
+                        <div class="col-sm-5">
+                            <input type="hidden" name="permission_parent_id" class="form-control" id="inputPermissionParentId" value="{{ old('permission_parent_id') }}">
+                            <select class="form-control permission_parent_id select2-hidden-accessible" style="width: 100%;" name="permission_parent_id" tabindex="-1" aria-hidden="true" value="{{ old('permission_parent_id') }}">
+                                <option selected="" value=""></option>
+                                @foreach($permissions as $permissionKey=>$permissionValue)
+                                    <option value="{{$permissionKey}}" >{{$permissionValue}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    {{--<div class="form-group">--}}
+
+                        {{--<label for="inputPermissionSlug" class="col-sm-1 control-label">Slug</label>--}}
+
+                        {{--<div class="col-sm-5">--}}
+                            {{--<input type="text" name="permission_slug" class="form-control" id="inputPermissionSlug" placeholder="Permission Slug" value="{{ old('permission_slug') }}">--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    <div class="form-group">
+
+                        <label for="inputPermissionName" class="col-sm-1 control-label">Name</label>
+
+                        <div class="col-sm-5">
+                            <input type="text" name="permission_name" class="form-control" id="inputPermissionName" placeholder="Permission Name" value="{{ old('permission_name') }}">
+                        </div>
+                    </div>
+                    {{--<div class="form-group">--}}
+
+                    {{--<label for="inputPermissionIsBase" class="col-sm-1 control-label">基础功能权限</label>--}}
+
+                    {{--<div class="col-sm-4">--}}
+                    {{--<input type="checkbox" name="permission_is_base" class="form-control" id="inputPermissionIsBase" value="{{ old('permission_is_base') }}">--}}
+                    {{--<span class="help-block">--}}
+                    {{--<i class="fa fa-info-circle"></i>&nbsp;打开后,任何主体都默认拥有该权限对应的功能.即:在角色管理分配权限的时候可以进行分配--}}
+                    {{--</span>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    <div class="form-horizontal">
+
+                        <h4>Menu</h4>
+
+                        <div class="form-group">
+
+                            <label for="inputMenuParentId" class="col-sm-1 control-label">Parent</label>
+
+                            <div class="col-sm-5">
+                                <input type="hidden" name="menu_parent_id" class="form-control" id="inputMenuParentId" value="{{ old('menu_parent_id') }}">
+                                <select class="form-control menu_parent_id select2-hidden-accessible" style="width: 100%;" name="menu_parent_id" tabindex="-1" aria-hidden="true" value="{{ old('menu_parent_id') }}">
+                                    <option selected="" value=""></option>
+                                    @foreach($menus as $menuKey=>$menuValue)
+                                        <option value="{{$menuKey}}" >{{$menuValue}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="inputMenuTitle" class="col-sm-1 control-label">Title</label>
+
+                            <div class="col-sm-5">
+                                <input type="text" name="menu_title" class="form-control" id="inputMenuTitle" placeholder="Menu Title" value="{{ old('menu_title') }}">
+                            </div>
+                        </div>
+                        {{--<div class="form-group">--}}
+
+                            {{--<label for="inputMenuUri" class="col-sm-1 control-label">URI</label>--}}
+
+                            {{--<div class="col-sm-5">--}}
+                                {{--<input type="text" name="menu_uri" class="form-control" id="inputMenuUri" placeholder="Menu Uri" value="{{ old('menu_uri') }}">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+
+                        <div class="form-group">
+
+                            <label for="inputMenuIcon" class="col-sm-1 control-label">Icon</label>
+
+                            <div class="col-sm-5">
+                                <input type="text" name="menu_icon" class="form-control" id="inputMenuIcon" placeholder="Icon" value="{{ old('menu_icon') }}">
+                            </div>
+                        </div>
+                        {{--<div class="form-group">--}}
+
+                        {{--<label for="inputPermissionIsBase" class="col-sm-1 control-label">基础功能权限</label>--}}
+
+                        {{--<div class="col-sm-4">--}}
+                        {{--<input type="checkbox" name="permission_is_base" class="form-control" id="inputPermissionIsBase" value="{{ old('permission_is_base') }}">--}}
+                        {{--<span class="help-block">--}}
+                        {{--<i class="fa fa-info-circle"></i>&nbsp;打开后,任何主体都默认拥有该权限对应的功能.即:在角色管理分配权限的时候可以进行分配--}}
+                        {{--</span>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
+                    </div>
+
+                </div>
+                <hr/>
 
                 <h4>Fields</h4>
 
@@ -81,7 +217,7 @@
                         @foreach(old('fields') as $index => $field)
                             <tr>
                                 <td>
-                                    <input type="text" name="fields[{{$index}}][name]" class="form-control" placeholder="field name" value="{{$field['name']}}" />
+                                    <input type="text" name="fields[{{$index}}][name]" class="form-control" placeholder="field name" value="{{$field['name']}}"/>
                                 </td>
                                 <td>
                                     <select style="width: 200px" name="fields[{{$index}}][type]">
@@ -90,45 +226,58 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td><input type="checkbox" name="fields[{{$index}}][nullable]" {{ array_get($field, 'nullable') == 'on' ? 'checked': '' }}/></td>
+                                <td>
+                                    <input type="checkbox" name="fields[{{$index}}][nullable]" {{ array_get($field, 'nullable') == 'on' ? 'checked': '' }}/>
+                                </td>
                                 <td>
                                     <select style="width: 150px" name="fields[{{$index}}][key]">
                                         {{--<option value="primary">Primary</option>--}}
                                         <option value="" {{$field['key'] == '' ? 'selected' : '' }}>NULL</option>
-                                        <option value="unique" {{$field['key'] == 'unique' ? 'selected' : '' }}>Unique</option>
-                                        <option value="index" {{$field['key'] == 'index' ? 'selected' : '' }}>Index</option>
+                                        <option value="unique" {{$field['key'] == 'unique' ? 'selected' : '' }}>Unique
+                                        </option>
+                                        <option value="index" {{$field['key'] == 'index' ? 'selected' : '' }}>Index
+                                        </option>
                                     </select>
                                 </td>
-                                <td><input type="text" class="form-control" placeholder="default value" name="fields[{{$index}}][default]" value="{{$field['default']}}"/></td>
-                                <td><input type="text" class="form-control" placeholder="comment" name="fields[{{$index}}][comment]" value="{{$field['comment']}}" /></td>
-                                <td><a class="btn btn-sm btn-danger table-field-remove"><i class="fa fa-trash"></i> remove</a></td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="default value" name="fields[{{$index}}][default]" value="{{$field['default']}}"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="comment" name="fields[{{$index}}][comment]" value="{{$field['comment']}}"/>
+                                </td>
+                                <td><a class="btn btn-sm btn-danger table-field-remove"><i class="fa fa-trash"></i>
+                                        remove</a></td>
                             </tr>
                         @endforeach
                     @else
-                    <tr>
-                        <td>
-                            <input type="text" name="fields[0][name]" class="form-control" placeholder="field name" />
-                        </td>
-                        <td>
-                            <select style="width: 200px" name="fields[0][type]">
-                                @foreach($dbTypes as $type)
-                                    <option value="{{ $type }}">{{$type}}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td><input type="checkbox" name="fields[0][nullable]" /></td>
-                        <td>
-                            <select style="width: 150px" name="fields[0][key]">
-                                {{--<option value="primary">Primary</option>--}}
-                                <option value="" selected>NULL</option>
-                                <option value="unique">Unique</option>
-                                <option value="index">Index</option>
-                            </select>
-                        </td>
-                        <td><input type="text" class="form-control" placeholder="default value" name="fields[0][default]"></td>
-                        <td><input type="text" class="form-control" placeholder="comment" name="fields[0][comment]"></td>
-                        <td><a class="btn btn-sm btn-danger table-field-remove"><i class="fa fa-trash"></i> remove</a></td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="fields[0][name]" class="form-control" placeholder="field name"/>
+                            </td>
+                            <td>
+                                <select style="width: 200px" name="fields[0][type]">
+                                    @foreach($dbTypes as $type)
+                                        <option value="{{ $type }}">{{$type}}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td><input type="checkbox" name="fields[0][nullable]"/></td>
+                            <td>
+                                <select style="width: 150px" name="fields[0][key]">
+                                    {{--<option value="primary">Primary</option>--}}
+                                    <option value="" selected>NULL</option>
+                                    <option value="unique">Unique</option>
+                                    <option value="index">Index</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="default value" name="fields[0][default]">
+                            </td>
+                            <td><input type="text" class="form-control" placeholder="comment" name="fields[0][comment]">
+                            </td>
+                            <td><a class="btn btn-sm btn-danger table-field-remove"><i class="fa fa-trash"></i>
+                                    remove</a></td>
+                        </tr>
                     @endif
                     </tbody>
                 </table>
@@ -139,7 +288,9 @@
 
 
                     <div class='form-group'>
-                        <button type="button" class="btn btn-sm btn-success" id="add-table-field"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add field</button>
+                        <button type="button" class="btn btn-sm btn-success" id="add-table-field">
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;Add field
+                        </button>
                     </div>
 
                     <div class='form-group pull-right' style="margin-right: 20px; margin-top: 5px;">
@@ -167,26 +318,26 @@
                 {{--<h4>Relations</h4>--}}
 
                 {{--<table class="table table-hover" id="model-relations">--}}
-                    {{--<tbody>--}}
-                    {{--<tr>--}}
-                        {{--<th style="width: 200px">Relation name</th>--}}
-                        {{--<th>Type</th>--}}
-                        {{--<th>Related model</th>--}}
-                        {{--<th>forignKey</th>--}}
-                        {{--<th>OtherKey</th>--}}
-                        {{--<th>With Pivot</th>--}}
-                        {{--<th>Action</th>--}}
-                    {{--</tr>--}}
-                    {{--</tbody>--}}
+                {{--<tbody>--}}
+                {{--<tr>--}}
+                {{--<th style="width: 200px">Relation name</th>--}}
+                {{--<th>Type</th>--}}
+                {{--<th>Related model</th>--}}
+                {{--<th>forignKey</th>--}}
+                {{--<th>OtherKey</th>--}}
+                {{--<th>With Pivot</th>--}}
+                {{--<th>Action</th>--}}
+                {{--</tr>--}}
+                {{--</tbody>--}}
                 {{--</table>--}}
 
                 {{--<hr style="margin-top: 0;"/>--}}
 
                 {{--<div class='form-inline margin' style="width: 100%">--}}
 
-                    {{--<div class='form-group'>--}}
-                        {{--<button type="button" class="btn btn-sm btn-success" id="add-model-relation"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add relation</button>--}}
-                    {{--</div>--}}
+                {{--<div class='form-group'>--}}
+                {{--<button type="button" class="btn btn-sm btn-success" id="add-model-relation"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add relation</button>--}}
+                {{--</div>--}}
 
                 {{--</div>--}}
 
@@ -196,9 +347,9 @@
                 <button type="submit" class="btn btn-info pull-right">submit</button>
             </div>
 
-            {{ csrf_field() }}
+        {{ csrf_field() }}
 
-            <!-- /.box-footer -->
+        <!-- /.box-footer -->
         </form>
 
     </div>
@@ -208,7 +359,7 @@
 <template id="table-field-tpl">
     <tr>
         <td>
-            <input type="text" name="fields[__index__][name]" class="form-control" placeholder="field name" />
+            <input type="text" name="fields[__index__][name]" class="form-control" placeholder="field name"/>
         </td>
         <td>
             <select style="width: 200px" name="fields[__index__][type]">
@@ -217,7 +368,7 @@
                 @endforeach
             </select>
         </td>
-        <td><input type="checkbox" name="fields[__index__][nullable]" /></td>
+        <td><input type="checkbox" name="fields[__index__][nullable]"/></td>
         <td>
             <select style="width: 150px" name="fields[__index__][key]">
                 <option value="" selected>NULL</option>
@@ -245,53 +396,55 @@
         <td><input type="text" class="form-control" placeholder="related model"></td>
         <td><input type="text" class="form-control" placeholder="default value"></td>
         <td><input type="text" class="form-control" placeholder="default value"></td>
-        <td><input type="checkbox" /></td>
+        <td><input type="checkbox"/></td>
         <td><a class="btn btn-sm btn-danger model-relation-remove"><i class="fa fa-trash"></i> remove</a></td>
     </tr>
 </template>
 
 <script>
 
-$(function () {
+    $(function () {
 
-    $('input[type=checkbox]').iCheck({checkboxClass:'icheckbox_minimal-blue'});
-    $('select').select2();
+        $('#inputMenuIcon').iconpicker({placement: 'bottomLeft'});
 
-    $('#add-table-field').click(function (event) {
-        $('#table-fields tbody').append($('#table-field-tpl').html().replace(/__index__/g, $('#table-fields tr').length - 1));
+        $('input[type=checkbox]').iCheck({checkboxClass: 'icheckbox_minimal-blue'});
         $('select').select2();
-        $('input[type=checkbox]').iCheck({checkboxClass:'icheckbox_minimal-blue'});
+
+        $('#add-table-field').click(function (event) {
+            $('#table-fields tbody').append($('#table-field-tpl').html().replace(/__index__/g, $('#table-fields tr').length - 1));
+            $('select').select2();
+            $('input[type=checkbox]').iCheck({checkboxClass: 'icheckbox_minimal-blue'});
+        });
+
+        $('#table-fields').on('click', '.table-field-remove', function (event) {
+            $(event.target).closest('tr').remove();
+        });
+
+        $('#add-model-relation').click(function (event) {
+            $('#model-relations tbody').append($('#model-relation-tpl').html().replace(/__index__/g, $('#model-relations tr').length - 1));
+            $('select').select2();
+            $('input[type=checkbox]').iCheck({checkboxClass: 'icheckbox_minimal-blue'});
+
+            relation_count++;
+        });
+
+        $('#model-relations').on('click', '.model-relation-remove', function (event) {
+            $(event.target).closest('tr').remove();
+        });
+
+        $('#scaffold').on('submit', function (event) {
+
+            //event.preventDefault();
+
+            if ($('#inputTableName').val() == '') {
+                $('#inputTableName').closest('.form-group').addClass('has-error');
+                $('#table-name-help').removeClass('hide');
+
+                return false;
+            }
+
+            return true;
+        });
     });
-
-    $('#table-fields').on('click', '.table-field-remove', function(event) {
-        $(event.target).closest('tr').remove();
-    });
-
-    $('#add-model-relation').click(function (event) {
-        $('#model-relations tbody').append($('#model-relation-tpl').html().replace(/__index__/g, $('#model-relations tr').length - 1));
-        $('select').select2();
-        $('input[type=checkbox]').iCheck({checkboxClass:'icheckbox_minimal-blue'});
-
-        relation_count++;
-    });
-
-    $('#model-relations').on('click', '.model-relation-remove', function(event) {
-        $(event.target).closest('tr').remove();
-    });
-
-    $('#scaffold').on('submit', function (event) {
-
-        //event.preventDefault();
-
-        if ($('#inputTableName').val() == '') {
-            $('#inputTableName').closest('.form-group').addClass('has-error');
-            $('#table-name-help').removeClass('hide');
-
-            return false;
-        }
-
-        return true;
-    });
-});
 
 </script>

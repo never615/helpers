@@ -1,0 +1,51 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyModelNamespace;
+use Encore\Admin\Form;
+use Encore\Admin\Grid;
+use Mallto\Admin\Controllers\Base\AdminCommonController;
+
+
+class DummyClass extends AdminCommonController
+{
+
+
+    /**
+     * 获取这个模块的标题
+     *
+     * @return mixed
+     */
+    protected function getHeaderTitle()
+    {
+       return "DummyName";
+    }
+
+    /**
+     * 获取这个模块的Model
+     *
+     * @return mixed
+     */
+    protected function getModel()
+    {
+       return DummyModel::class;
+    }
+
+    protected function gridOption(Grid $grid)
+    {
+    }
+
+    /**
+     * 需要实现的form设置
+     *
+     * 如果需要使用tab,则需要复写defaultFormOption()方法,
+     * 然后formOption留空即可
+     *
+     * @param Form $form
+     * @return mixed
+     */
+    protected function formOption(Form $form)
+    {
+    }
+}

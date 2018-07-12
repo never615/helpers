@@ -10,7 +10,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-
 class RouteController extends Controller
 {
     public function index()
