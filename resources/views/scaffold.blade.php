@@ -78,6 +78,9 @@
                                     <input type="checkbox" checked value="migration" name="create[]"/> Create migration
                                 </label>
                                 <label>
+                                    <input type="checkbox" checked value="migration_with_subject" name="create[]"/> Create migration with subject
+                                </label>
+                                <label>
                                     <input type="checkbox" checked value="model" name="create[]"/> Create model
                                 </label>
                                 <label>
