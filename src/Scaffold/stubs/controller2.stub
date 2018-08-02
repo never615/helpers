@@ -34,6 +34,8 @@ class DummyClass extends AdminCommonController
 
     protected function gridOption(Grid $grid)
     {
+     DummyGridConfig
+
     }
 
     /**
@@ -47,5 +49,6 @@ class DummyClass extends AdminCommonController
      */
     protected function formOption(Form $form)
     {
+    DummyFormConfig
     }
 }

@@ -41,12 +41,16 @@ class ControllerCreator
      *
      * @param string $tableName
      *
-     * @throws \Exception
-     *
+     * @param null   $fields
      * @return string
+     * @throws \Exception
      */
-    public function create($tableName)
+    public function create($tableName, $fields = [])
     {
+
+        $fieldNames = array_pluck($fields, "name");
+
+
         $controllerClassName = studly_case(camel_case(str_singular($tableName)))."Controller";
         $modelClassName = studly_case(camel_case(str_singular($tableName)));
         $path = $this->getpath($controllerClassName);
@@ -57,10 +61,12 @@ class ControllerCreator
 
         $stub = $this->files->get($this->getStub());
 
-        $this->files->put($path, $this->replace($stub, $controllerClassName, $modelClassName, $tableName));
+        $this->files->put($path, $this->replace($stub, $controllerClassName, $modelClassName, $tableName,$fieldNames));
 
         return $path;
     }
+
+
 
     /**
      * @param string $stub
@@ -68,18 +74,29 @@ class ControllerCreator
      * @param string $modelNameClass
      *
      * @param        $tableName
+     * @param        $fieldNames
      * @return string
      */
-    protected function replace($stub, $controllerNameClass, $modelNameClass, $tableName)
+    protected function replace($stub, $controllerNameClass, $modelNameClass, $tableName,$fieldNames)
     {
         return str_replace(
-            ['DummyModelNamespace', 'DummyModel', 'DummyClass', 'DummyNamespace', 'DummyName'],
+            [
+                'DummyModelNamespace',
+                'DummyModel',
+                'DummyClass',
+                'DummyNamespace',
+                'DummyName',
+                'DummyGridConfig',
+                'DummyFormConfig',
+            ],
             [
                 $this->config->model_namespace.'\\'.class_basename($modelNameClass),
                 class_basename($modelNameClass),
                 $controllerNameClass,
                 $this->controllerNamespace,
                 $tableName,
+                $this->gridGenerator($fieldNames),
+                $this->formGenerator($fieldNames),
             ],
             $stub
         );
@@ -106,5 +123,38 @@ class ControllerCreator
     public function getStub()
     {
         return __DIR__.'/stubs/controller2.stub';
+    }
+
+
+
+    /**
+     * 生成默认的grid代码
+     *
+     * @param $fieldNames
+     * @return string
+     */
+    private function gridGenerator($fieldNames)
+    {
+        $temp = "";
+        foreach ($fieldNames as $fieldName) {
+            $temp.='$grid->'.$fieldName.'();'.PHP_EOL;
+        }
+        return $temp;
+
+    }
+
+    /**
+     * 生成默认的form代码
+     *
+     * @param $fieldNames
+     * @return string
+     */
+    private function formGenerator($fieldNames)
+    {
+        $temp = "";
+        foreach ($fieldNames as $fieldName) {
+            $temp.='$form->text("'.$fieldName.'");'.PHP_EOL;
+        }
+        return $temp;
     }
 }

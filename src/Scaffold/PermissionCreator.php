@@ -17,22 +17,24 @@ class PermissionCreator
     public function create($inputs)
     {
 
-        $parent = Permission::find($inputs["parent_id"]);
-        $path = null;
-        if ($parent) {
-            if (!empty($parent->path)) {
-                $path = $parent->path.$parent->id.".";
-            } else {
-                $path = ".".$parent->id.".";
+        if ($inputs && isset($inputs["parent_id"])) {
+            $parent = Permission::find($inputs["parent_id"]);
+            $path = null;
+            if ($parent) {
+                if (!empty($parent->path)) {
+                    $path = $parent->path.$parent->id.".";
+                } else {
+                    $path = ".".$parent->id.".";
+                }
             }
-        }
 
-        Permission::create([
-            "parent_id" => $inputs["parent_id"],
-            "slug"      => $inputs["slug"],
-            "name"      => $inputs["name"],
-            "path"      => $path,
-        ]);
+            Permission::create([
+                "parent_id" => $inputs["parent_id"],
+                "slug"      => $inputs["slug"],
+                "name"      => $inputs["name"],
+                "path"      => $path,
+            ]);
+        }
     }
 
 }

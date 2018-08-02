@@ -125,7 +125,7 @@ class ScaffoldController extends Controller
                 $paths['controller'] = (
                 new ControllerCreator(
                     $config
-                ))->create($tableName);
+                ))->create($tableName,$request->get('fields'));
             }
 
             // 3. Create migration.
