@@ -30,8 +30,8 @@ class ControllerCreator
     public function __construct($config, $files = null)
     {
         $this->files = $files ?: app('files');
-        $this->controllerNamespace = $config->controller_namespace;
-        $this->controllerPath = $config->controller_path;
+        $this->controllerNamespace = $config->base_namespace."\\Controller\\Admin";
+        $this->controllerPath = $config->base_path."/src/Controller/Admin";
 
         $this->config = $config;
     }
@@ -41,11 +41,12 @@ class ControllerCreator
      *
      * @param string $tableName
      *
-     * @param null   $fields
+     * @param array  $fields
+     * @param null   $title
      * @return string
      * @throws \Exception
      */
-    public function create($tableName, $fields = [])
+    public function create($tableName, $fields = [],$title=null)
     {
 
         $fieldNames = array_pluck($fields, "name");
@@ -61,11 +62,11 @@ class ControllerCreator
 
         $stub = $this->files->get($this->getStub());
 
-        $this->files->put($path, $this->replace($stub, $controllerClassName, $modelClassName, $tableName,$fieldNames));
+        $this->files->put($path, $this->replace($stub, $controllerClassName, $modelClassName,
+            $tableName,$fieldNames,$title));
 
         return $path;
     }
-
 
 
     /**
@@ -75,9 +76,10 @@ class ControllerCreator
      *
      * @param        $tableName
      * @param        $fieldNames
+     * @param        $title
      * @return string
      */
-    protected function replace($stub, $controllerNameClass, $modelNameClass, $tableName,$fieldNames)
+    protected function replace($stub, $controllerNameClass, $modelNameClass, $tableName,$fieldNames,$title)
     {
         return str_replace(
             [
@@ -90,11 +92,11 @@ class ControllerCreator
                 'DummyFormConfig',
             ],
             [
-                $this->config->model_namespace.'\\'.class_basename($modelNameClass),
+                $this->config->base_namespace."\\Data\\".class_basename($modelNameClass),
                 class_basename($modelNameClass),
                 $controllerNameClass,
                 $this->controllerNamespace,
-                $tableName,
+                $title?:$tableName,
                 $this->gridGenerator($fieldNames),
                 $this->formGenerator($fieldNames),
             ],

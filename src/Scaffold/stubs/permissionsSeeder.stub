@@ -1,0 +1,23 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Seeder;
+use Mallto\Admin\Seeder\SeederMaker;
+
+
+class DummyClass extends Seeder
+{
+
+    use SeederMaker;
+
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->createPermissions("DummyTitle", "DummyUri");
+    }
+}

@@ -1,8 +1,19 @@
 <?php
 
 return [
+//DummyRoutePlaceholder:此标识放在路由文件中,作为查询路由的点
 
-    //example
+//    "easy_mall" => [
+//        "base_namespace"        => 'Mallto\Mall',
+//        "base_path"             => 'packages/mallto/easy-mall',
+//    ],
+//    "easy_tool" => [
+//        "base_namespace"        => 'Mallto\Tool',
+//        "base_path"             => 'packages/mallto/easy-tool',
+//    ],
+
+
+    //废弃配置
 //    "easy_mall" => [
 //        "model_namespace"        => 'Mallto\Mall\Data',
 //        "controller_namespace"   => 'Mallto\Mall\Controller\Admin',

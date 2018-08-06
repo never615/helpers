@@ -1,0 +1,38 @@
+<?php
+
+namespace DummyNamespace;
+
+use Mallto\Admin\Data\Menu;
+use Illuminate\Database\Seeder;
+
+
+class DummyClass extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $menu = Menu::where("uri", "DummyParentMenuUri")->first();
+
+        $order=10000;
+        $parentId=0;
+        if($menu){
+            $order=$menu->order;
+            $parentId=$menu->parent_id;
+        }
+
+        Menu::updateOrCreate([
+            'uri' => 'DummyMenuUri.index',
+        ], [
+                'parent_id' => $parentId,
+                'order'     => $order += 1,
+                'title'     => 'DummyMenuTitle',
+                'icon'      => 'DummyMenuIcon',
+            ]
+        );
+
+    }
+}

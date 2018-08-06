@@ -13,12 +13,6 @@ class ModelCreator
      */
     protected $tableName;
 
-//    /**
-//     * Model name.
-//     *
-//     * @var string
-//     */
-//    protected $name;
 
     /**
      * The filesystem instance.
@@ -30,21 +24,6 @@ class ModelCreator
     private $path;
     private $modelClassName;
 
-//    /**
-//     * ModelCreator constructor.
-//     *
-//     * @param string $tableName
-//     * @param string $name
-//     * @param null   $files
-//     */
-//    public function __construct($tableName, $name, $files = null)
-//    {
-//        $this->tableName = $tableName;
-//
-//        $this->name = $name;
-//
-//        $this->files = $files ?: app('files');
-//    }
 
     /**
      * ModelCreator constructor.
@@ -57,8 +36,8 @@ class ModelCreator
     {
         $this->tableName = $tableName;
         $this->files = $files ?: app('files');
-        $this->namespace = $config->model_namespace;
-        $this->path = $config->model_path;
+        $this->namespace = $config->base_namespace."\\Data";
+        $this->path = $config->base_path."/src/Data";
 
         //model class name 根据tableName按照一定规则自动生成
         $this->modelClassName = studly_case(camel_case(str_singular($this->tableName)));
@@ -108,11 +87,6 @@ class ModelCreator
     public function getPath()
     {
         return base_path($this->path."/".$this->modelClassName.'.php');
-//        $segments = explode('\\', $name);
-//
-//        array_shift($segments);
-//
-//        return app_path(implode('/', $segments)).'.php';
     }
 
     /**
@@ -137,7 +111,6 @@ class ModelCreator
      */
     protected function replaceClass(&$stub, $name)
     {
-//        $class = str_replace($this->getNamespace($name).'\\', '', $name);
         $class = $name;
 
         $stub = str_replace('DummyClass', $class, $stub);
@@ -155,10 +128,6 @@ class ModelCreator
      */
     protected function replaceNamespace(&$stub, $nameSpace)
     {
-//        $stub = str_replace(
-//            'DummyNamespace', $this->getNamespace($nameSpace), $stub
-//        );
-
         $stub = str_replace(
             'DummyNamespace', $nameSpace, $stub
         );
@@ -215,7 +184,6 @@ class ModelCreator
      */
     protected function replaceTable(&$stub, $modelClassName)
     {
-//        $class = str_replace($this->getNamespace($modelClassName).'\\', '', $modelClassName);
         $class = $modelClassName;
 
         $table = Str::plural(strtolower($class)) !== $this->tableName ? "protected \$table = '$this->tableName';\n" : '';

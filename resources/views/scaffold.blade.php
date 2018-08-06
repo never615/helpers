@@ -90,6 +90,15 @@
                                 <label>
                                     <input type="checkbox" checked value="migrate" name="create[]"/> Run migrate
                                 </label>
+                                <label>
+                                    <input type="checkbox" checked value="menu" name="create[]"/> Create menu
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked value="permission" name="create[]"/> Create permission
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked value="route" name="create[]"/> Create route
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -100,49 +109,32 @@
 
                 <div class="form-horizontal">
 
-                    <h4>Permission</h4>
+                    {{--<h4>Permission</h4>--}}
 
-                    <div class="form-group">
-
-                        <label for="inputPermissionParentId" class="col-sm-1 control-label">Parent</label>
-
-                        <div class="col-sm-5">
-                            <input type="hidden" name="permission_parent_id" class="form-control" id="inputPermissionParentId" value="{{ old('permission_parent_id') }}">
-                            <select class="form-control permission_parent_id select2-hidden-accessible" style="width: 100%;" name="permission_parent_id" tabindex="-1" aria-hidden="true" value="{{ old('permission_parent_id') }}">
-                                <option selected="" value=""></option>
-                                @foreach($permissions as $permissionKey=>$permissionValue)
-                                    <option value="{{$permissionKey}}" >{{$permissionValue}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                     {{--<div class="form-group">--}}
 
-                        {{--<label for="inputPermissionSlug" class="col-sm-1 control-label">Slug</label>--}}
+                        {{--<label for="inputPermissionParentId" class="col-sm-1 control-label">Parent</label>--}}
 
                         {{--<div class="col-sm-5">--}}
-                            {{--<input type="text" name="permission_slug" class="form-control" id="inputPermissionSlug" placeholder="Permission Slug" value="{{ old('permission_slug') }}">--}}
+                            {{--<input type="hidden" name="permission_parent_id" class="form-control" id="inputPermissionParentId" value="{{ old('permission_parent_id') }}">--}}
+                            {{--<select class="form-control permission_parent_id select2-hidden-accessible" style="width: 100%;" name="permission_parent_id" tabindex="-1" aria-hidden="true" value="{{ old('permission_parent_id') }}">--}}
+                                {{--<option selected="" value=""></option>--}}
+                                {{--@foreach($permissions as $permissionKey=>$permissionValue)--}}
+                                    {{--<option value="{{$permissionKey}}" >{{$permissionValue}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
                         {{--</div>--}}
                     {{--</div>--}}
-                    <div class="form-group">
-
-                        <label for="inputPermissionName" class="col-sm-1 control-label">Name</label>
-
-                        <div class="col-sm-5">
-                            <input type="text" name="permission_name" class="form-control" id="inputPermissionName" placeholder="Permission Name" value="{{ old('permission_name') }}">
-                        </div>
-                    </div>
+ {{----}}
                     {{--<div class="form-group">--}}
 
-                    {{--<label for="inputPermissionIsBase" class="col-sm-1 control-label">基础功能权限</label>--}}
+                        {{--<label for="inputPermissionName" class="col-sm-1 control-label">Name</label>--}}
 
-                    {{--<div class="col-sm-4">--}}
-                    {{--<input type="checkbox" name="permission_is_base" class="form-control" id="inputPermissionIsBase" value="{{ old('permission_is_base') }}">--}}
-                    {{--<span class="help-block">--}}
-                    {{--<i class="fa fa-info-circle"></i>&nbsp;打开后,任何主体都默认拥有该权限对应的功能.即:在角色管理分配权限的时候可以进行分配--}}
-                    {{--</span>--}}
+                        {{--<div class="col-sm-5">--}}
+                            {{--<input type="text" name="permission_name" class="form-control" id="inputPermissionName" placeholder="Permission Name" value="{{ old('permission_name') }}">--}}
+                        {{--</div>--}}
                     {{--</div>--}}
-                    {{--</div>--}}
+
                     <div class="form-horizontal">
 
                         <h4>Menu</h4>
@@ -169,14 +161,6 @@
                                 <input type="text" name="menu_title" class="form-control" id="inputMenuTitle" placeholder="Menu Title" value="{{ old('menu_title') }}">
                             </div>
                         </div>
-                        {{--<div class="form-group">--}}
-
-                            {{--<label for="inputMenuUri" class="col-sm-1 control-label">URI</label>--}}
-
-                            {{--<div class="col-sm-5">--}}
-                                {{--<input type="text" name="menu_uri" class="form-control" id="inputMenuUri" placeholder="Menu Uri" value="{{ old('menu_uri') }}">--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
 
                         <div class="form-group">
 
@@ -186,17 +170,6 @@
                                 <input type="text" name="menu_icon" class="form-control" id="inputMenuIcon" placeholder="Icon" value="{{ old('menu_icon') }}">
                             </div>
                         </div>
-                        {{--<div class="form-group">--}}
-
-                        {{--<label for="inputPermissionIsBase" class="col-sm-1 control-label">基础功能权限</label>--}}
-
-                        {{--<div class="col-sm-4">--}}
-                        {{--<input type="checkbox" name="permission_is_base" class="form-control" id="inputPermissionIsBase" value="{{ old('permission_is_base') }}">--}}
-                        {{--<span class="help-block">--}}
-                        {{--<i class="fa fa-info-circle"></i>&nbsp;打开后,任何主体都默认拥有该权限对应的功能.即:在角色管理分配权限的时候可以进行分配--}}
-                        {{--</span>--}}
-                        {{--</div>--}}
-                        {{--</div>--}}
                     </div>
 
                 </div>

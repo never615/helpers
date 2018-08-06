@@ -87,19 +87,16 @@ class ScaffoldController extends Controller
         $tableName = $request->table_name;
 
         $permissionInputs = [
-            "parent_id" => $request->permission_parent_id,
-//            "slug"      => $request->permission_slug,
-            "slug"      => $tableName,
-            "name"      => $request->permission_name,
+            "name"      => $request->menu_title,
         ];
 
         $menuInputs = [
             "parent_id" => $request->menu_parent_id,
             "title"     => $request->menu_title,
-//            "uri"       => $request->uri,
-            "uri"       => $tableName.".index",
             "icon"      => $request->menu_icon,
         ];
+
+        $title=$menuInputs['title']?:$tableName;
 
 
         $paths = [];
@@ -108,7 +105,7 @@ class ScaffoldController extends Controller
         try {
 
             // 1. Create model.
-            if (in_array('model', $request->get('create'))) {
+            if (in_array('model', $request->get('create', []))) {
                 $modelCreator = new ModelCreator(
                     $tableName, $config);
 
@@ -125,7 +122,7 @@ class ScaffoldController extends Controller
                 $paths['controller'] = (
                 new ControllerCreator(
                     $config
-                ))->create($tableName,$request->get('fields'));
+                ))->create($tableName, $request->get('fields'),$title);
             }
 
             // 3. Create migration.
@@ -138,17 +135,19 @@ class ScaffoldController extends Controller
                         $request->get('primary_key', 'id'),
                         $request->get('timestamps') == 'on',
                         $request->get('soft_deletes') == 'on'
-                    )->create(
+                    )->create2(
                         $migrationName,
-                        $config->migration_path,
+                        $config->base_path."/migrations",
                         $tableName
                     );
             }
 
 
             //4. create route
-            (new RouteCreator($tableName, $config->route_path))
-                ->create();
+            if (in_array('route', $request->get('create'))) {
+                (new RouteCreator($tableName,  $config->base_path."/routes/web.php"))
+                    ->create();
+            }
 
 
             //5. Run migrate.
@@ -159,12 +158,14 @@ class ScaffoldController extends Controller
 
 
             //6. create permission
-            (new PermissionCreator())->create($permissionInputs);
-            //todo seeder
+            if (in_array('permission', $request->get('create'))) {
+                (new PermissionCreator())->create($permissionInputs,$tableName,$config);
+            }
 
             //7. create menu
-            (new MenuCreator())->create($menuInputs);
-            //todo seeder
+            if (in_array('menu', $request->get('create'))) {
+                (new MenuCreator())->create($menuInputs,$tableName,$config);
+            }
 
 
         } catch (\Exception $exception) {
