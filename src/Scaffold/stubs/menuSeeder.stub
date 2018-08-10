@@ -21,7 +21,7 @@ class DummyClass extends Seeder
         $parentId=0;
         if($menu){
             $order=$menu->order;
-            $parentId=$menu->parent_id;
+            $parentId=$menu->id;
         }
 
         Menu::updateOrCreate([

@@ -30,7 +30,7 @@ class PermissionCreator
 
         $this->config = $config;
         $this->namespace = $config->base_namespace."\\Seeder\\Permission";
-        $className = studly_case(camel_case(str_singular($tableName)))."Seeder";
+        $className = studly_case(camel_case(str_singular($tableName)))."PermissionSeeder";
         $this->className = $className;
         //1.生成权限seeder
         $files = app('files');
@@ -48,10 +48,10 @@ class PermissionCreator
 
         //2.配置调用seeder的代码
         //DummySeeder
-        $tablesSeederPath = $this->getTableSeederPath();
-        $tablesSeederStub = $files->get($tablesSeederPath);
-        $files->put($this->getTableSeederPath(),
-            $this->replace2($tablesSeederStub));
+//        $tablesSeederPath = $this->getTableSeederPath();
+//        $tablesSeederStub = $files->get($tablesSeederPath);
+//        $files->put($this->getTableSeederPath(),
+//            $this->replace2($tablesSeederStub));
 
 
         //3. 配置permissinTablesSeeder文件
@@ -132,16 +132,16 @@ class PermissionCreator
     }
 
 
-    /**
-     * Get file path from
-     *
-     *
-     * @return string
-     */
-    public function getTableSeederPath()
-    {
-        return base_path($this->config->base_path."/src/Seeder/TablesSeeder.php");
-    }
+//    /**
+//     * Get file path from
+//     *
+//     *
+//     * @return string
+//     */
+//    public function getTableSeederPath()
+//    {
+//        return base_path($this->config->base_path."/src/Seeder/TablesSeeder.php");
+//    }
 
 
     /**

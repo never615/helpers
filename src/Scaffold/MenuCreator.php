@@ -29,7 +29,7 @@ class MenuCreator
     {
         $this->config = $config;
         $this->namespace = $config->base_namespace."\\Seeder\\Menu";
-        $className = studly_case(camel_case(str_singular($tableName)))."Seeder";
+        $className = studly_case(camel_case(str_singular($tableName)))."MenuSeeder";
         $this->className = $className;
         //1.生成菜单seeder
         $files = app('files');
@@ -53,7 +53,7 @@ class MenuCreator
 
         //2.配置调用seeder的代码
         //DummySeeder
-        $tablesSeederPath = $this->getTableSeederPath();
+        $tablesSeederPath = $this->getMenuTableSeederPath();
         $tablesSeederStub = $files->get($tablesSeederPath);
         $files->put($tablesSeederPath,
             $this->replace2($tablesSeederStub));
@@ -150,9 +150,9 @@ class MenuCreator
      *
      * @return string
      */
-    public function getTableSeederPath()
+    public function getMenuTableSeederPath()
     {
-        return base_path($this->config->base_path."/src/Seeder/TablesSeeder.php");
+        return base_path($this->config->base_path."/src/Seeder/MenuTablesSeeder.php");
     }
 
     /**
