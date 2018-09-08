@@ -5,6 +5,7 @@
 
 namespace Encore\Admin\Helpers\Scaffold;
 
+use Encore\Admin\Auth\Database\Permission;
 use Mallto\Admin\Seeder\SeederMaker;
 
 class PermissionCreator
@@ -60,7 +61,14 @@ class PermissionCreator
             $this->replace3($permissionTablesSeederStub));
 
         //4. 直接使用代码生成菜单
-        $parentId = $this->createPermissions($inputs["name"], $tableName);
+
+        $parentId=0;
+        $parentPermisson=Permission::where("slug",$inputs["parent_slug"])->first();
+        if($parentPermisson){
+            $parentId=$parentPermisson->id;
+        }
+
+        $parentId = $this->createPermissions($inputs["name"], $tableName,true,$parentId);
 
         return $permissionPath;
 
