@@ -4,7 +4,7 @@ namespace DummyNamespace;
 
 use Illuminate\Database\Seeder;
 use Mallto\Admin\Seeder\SeederMaker;
-
+use Encore\Admin\Auth\Permission;
 
 class DummyClass extends Seeder
 {
@@ -18,6 +18,11 @@ class DummyClass extends Seeder
      */
     public function run()
     {
-        $this->createPermissions("DummyTitle", "DummyUri");
+        $parentId=0;
+        $parentPermisson=Permission::where("slug","DummySlug")->first();
+        if($parentPermisson){
+            $parentId=$parentPermisson->id;
+        }
+        $this->createPermissions("DummyTitle", "DummyUri",true,$parentId);
     }
 }

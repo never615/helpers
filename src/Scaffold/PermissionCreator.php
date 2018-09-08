@@ -27,7 +27,6 @@ class PermissionCreator
      */
     public function create($inputs, $tableName, $config)
     {
-
         $this->config = $config;
         $this->namespace = $config->base_namespace."\\Seeder\\Permission";
         $className = studly_case(camel_case(str_singular($tableName)))."PermissionSeeder";
@@ -81,12 +80,14 @@ class PermissionCreator
                 'DummyClass',
                 'DummyTitle',
                 'DummyUri',
+                'DummySlug',
             ],
             [
                 $this->namespace,
                 $this->className,
                 $inputs["name"],
                 $tableName,
+                $inputs["parent_slug"],
             ],
             $stub
         );

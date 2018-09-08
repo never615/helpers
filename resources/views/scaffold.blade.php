@@ -109,23 +109,23 @@
 
                 <div class="form-horizontal">
 
-                    {{--<h4>Permission</h4>--}}
+                    <h4>Permission</h4>
 
-                    {{--<div class="form-group">--}}
+                    <div class="form-group">
 
-                        {{--<label for="inputPermissionParentId" class="col-sm-1 control-label">Parent</label>--}}
+                        <label for="inputPermissionParentId" class="col-sm-1 control-label">Parent</label>
 
-                        {{--<div class="col-sm-5">--}}
-                            {{--<input type="hidden" name="permission_parent_id" class="form-control" id="inputPermissionParentId" value="{{ old('permission_parent_id') }}">--}}
-                            {{--<select class="form-control permission_parent_id select2-hidden-accessible" style="width: 100%;" name="permission_parent_id" tabindex="-1" aria-hidden="true" value="{{ old('permission_parent_id') }}">--}}
-                                {{--<option selected="" value=""></option>--}}
-                                {{--@foreach($permissions as $permissionKey=>$permissionValue)--}}
-                                    {{--<option value="{{$permissionKey}}" >{{$permissionValue}}</option>--}}
-                                {{--@endforeach--}}
-                            {{--</select>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
- {{----}}
+                        <div class="col-sm-5">
+                            <input type="hidden" name="permission_parent_id" class="form-control" id="inputPermissionParentId" value="{{ old('permission_parent_id') }}">
+                            <select class="form-control permission_parent_id select2-hidden-accessible" style="width: 100%;" name="permission_parent_id" tabindex="-1" aria-hidden="true" value="{{ old('permission_parent_id') }}">
+                                <option selected="" value=""></option>
+                                @foreach($permissions as $permissionKey=>$permissionValue)
+                                    <option value="{{$permissionKey}}" >{{$permissionValue}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     {{--<div class="form-group">--}}
 
                         {{--<label for="inputPermissionName" class="col-sm-1 control-label">Name</label>--}}

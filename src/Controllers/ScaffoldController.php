@@ -78,7 +78,7 @@ class ScaffoldController extends Controller
 
     public function store(Request $request)
     {
-        \Log::info($request->all());
+//        \Log::info($request->all());
 
 
         $config = (object) config("helps.".$request->config_id);
@@ -86,8 +86,17 @@ class ScaffoldController extends Controller
 
         $tableName = $request->table_name;
 
+        $parentPermissionId = $request->permission_parent_id;
+
+        $parentPermissionSlug = null;
+        $parentPermission = Permission::find($parentPermissionId);
+        if ($parentPermission) {
+            $parentPermissionSlug = $parentPermission->slug;
+        }
+
         $permissionInputs = [
-            "name"      => $request->menu_title,
+            "name"        => $request->menu_title,
+            "parent_slug" => $parentPermissionSlug,
         ];
 
         $menuInputs = [
@@ -96,7 +105,7 @@ class ScaffoldController extends Controller
             "icon"      => $request->menu_icon,
         ];
 
-        $title=$menuInputs['title']?:$tableName;
+        $title = $menuInputs['title'] ?: $tableName;
 
 
         $paths = [];
@@ -122,7 +131,7 @@ class ScaffoldController extends Controller
                 $paths['controller'] = (
                 new ControllerCreator(
                     $config
-                ))->create($tableName, $request->get('fields'),$title);
+                ))->create($tableName, $request->get('fields'), $title);
             }
 
             // 3. Create migration.
@@ -145,7 +154,7 @@ class ScaffoldController extends Controller
 
             //4. create route
             if (in_array('route', $request->get('create'))) {
-                (new RouteCreator($tableName,  $config->base_path."/routes/web.php"))
+                (new RouteCreator($tableName, $config->base_path."/routes/web.php"))
                     ->create();
             }
 
@@ -159,12 +168,12 @@ class ScaffoldController extends Controller
 
             //6. create permission
             if (in_array('permission', $request->get('create'))) {
-                (new PermissionCreator())->create($permissionInputs,$tableName,$config);
+                (new PermissionCreator())->create($permissionInputs, $tableName, $config);
             }
 
             //7. create menu
             if (in_array('menu', $request->get('create'))) {
-                (new MenuCreator())->create($menuInputs,$tableName,$config);
+                (new MenuCreator())->create($menuInputs, $tableName, $config);
             }
 
 
