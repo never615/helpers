@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class DummyClass extends Seeder
 {
+    use MenuSeederMaker;
+
     /**
      * Run the database seeds.
      *
@@ -17,22 +19,14 @@ class DummyClass extends Seeder
     {
         $menu = Menu::where("uri", "DummyParentMenuUri")->first();
 
-        $order=10000;
+        $order=Menu::max('order');
         $parentId=0;
         if($menu){
             $order=$menu->order;
             $parentId=$menu->id;
         }
 
-        Menu::updateOrCreate([
-            'uri' => 'DummyMenuUri.index',
-        ], [
-                'parent_id' => $parentId,
-                'order'     => $order += 1,
-                'title'     => 'DummyMenuTitle',
-                'icon'      => 'DummyMenuIcon',
-            ]
-        );
-
+        $this->updateOrCreate(
+                    'DummyMenuUri.index', $parentId, $order++, 'DummyMenuTitle', 'DummyMenuIcon');
     }
 }

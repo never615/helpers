@@ -179,7 +179,7 @@ class ScaffoldController extends Controller
 
         } catch (\Exception $exception) {
 
-            \Log::info($exception);
+            \Log::warning($exception);
 
             // Delete generated files if exception thrown.
             app('files')->delete($paths);
