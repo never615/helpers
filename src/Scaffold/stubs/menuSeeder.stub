@@ -4,7 +4,7 @@ namespace DummyNamespace;
 
 use Mallto\Admin\Data\Menu;
 use Illuminate\Database\Seeder;
-
+use Mallto\Admin\Seeder\MenuSeederMaker;
 
 class DummyClass extends Seeder
 {
