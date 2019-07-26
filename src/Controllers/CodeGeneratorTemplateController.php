@@ -80,7 +80,7 @@ class CodeGeneratorTemplateController extends Controller
     public function form()
     {
         return Admin::form(CodeGeneratorTemplate::class, function (Form $form) {
-            $form->display('id', 'ID');
+            $form->displayE('id', 'ID');
             $form->text("name");
             $form->textarea("model");
             $form->textarea("controller");
@@ -90,8 +90,8 @@ class CodeGeneratorTemplateController extends Controller
             $form->textarea("permission");
 
 
-            $form->display('created_at', trans('admin.created_at'));
-            $form->display('updated_at', trans('admin.updated_at'));
+            $form->displayE('created_at', trans('admin.created_at'));
+            $form->displayE('updated_at', trans('admin.updated_at'));
         });
     }
 }

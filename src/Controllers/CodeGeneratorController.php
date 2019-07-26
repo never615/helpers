@@ -87,11 +87,11 @@ class CodeGeneratorController extends Controller
     public function form()
     {
         return Admin::form(CodeGenerator::class, function (Form $form) {
-            $form->display('id', 'ID');
+            $form->displayE('id', 'ID');
 
 
-            $form->display('created_at', trans('admin.created_at'));
-            $form->display('updated_at', trans('admin.updated_at'));
+            $form->displayE('created_at', trans('admin.created_at'));
+            $form->displayE('updated_at', trans('admin.updated_at'));
         });
     }
 }

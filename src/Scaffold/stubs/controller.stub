@@ -89,10 +89,10 @@ class DummyClass extends Controller
     {
         return Admin::form(DummyModel::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->displayE('id', 'ID');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->displayE('created_at', 'Created At');
+            $form->displayE('updated_at', 'Updated At');
         });
     }
 }
