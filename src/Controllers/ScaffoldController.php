@@ -85,6 +85,7 @@ class ScaffoldController extends Controller
 //        \Log::info(\GuzzleHttp\json_encode($config));
 
         $tableName = $request->table_name;
+        $tableName = trim($tableName);
 
         $parentPermissionId = $request->permission_parent_id;
 
