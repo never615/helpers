@@ -72,7 +72,7 @@ class ScaffoldController extends Controller
             $configs = array_keys(config("helps"));
 
             $content->row(view('laravel-admin-helpers::scaffold',
-                compact('dbTypes', 'action', 'permissions', 'menus', 'configs', 'templates')));
+                compact('dbTypes', 'action', 'permissions', 'menus', 'configs')));
         });
     }
 
