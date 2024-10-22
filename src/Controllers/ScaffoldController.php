@@ -14,6 +14,7 @@ use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\MessageBag;
 use Mallto\Admin\Data\Menu;
@@ -180,7 +181,7 @@ class ScaffoldController extends Controller
 
         } catch (\Exception $exception) {
 
-            \Log::warning($exception);
+            Log::warning($exception);
 
             // Delete generated files if exception thrown.
             app('files')->delete($paths);
