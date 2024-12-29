@@ -30,14 +30,19 @@ class ModelCreator
      *
      * @param string $tableName
      * @param        $config
-     * @param null   $files
+     * @param null $files
      */
     public function __construct($tableName, $config, $files = null)
     {
         $this->tableName = $tableName;
         $this->files = $files ?: app('files');
-        $this->namespace = $config->base_namespace."\\Data";
-        $this->path = $config->base_path."/src/Data";
+        if ($config->data_namespace) {
+            $this->namespace = $config->data_namespace;
+            $this->path = $config->data_path;
+        } else {
+            $this->namespace = $config->base_namespace . "\\Data";
+            $this->path = $config->base_path . "/src/Data";
+        }
 
         //model class name 根据tableName按照一定规则自动生成
         $this->modelClassName = studly_case(camel_case(str_singular($this->tableName)));
@@ -46,13 +51,13 @@ class ModelCreator
     /**
      * Create a new model.
      *
-     * @param string     $keyName
-     * @param bool|true  $timestamps
+     * @param string $keyName
+     * @param bool|true $timestamps
      * @param bool|false $softDeletes
      *
+     * @return string
      * @throws \Exception
      *
-     * @return string
      */
     public function create($keyName = 'id', $timestamps = true, $softDeletes = false)
     {
@@ -86,7 +91,7 @@ class ModelCreator
      */
     public function getPath()
     {
-        return base_path($this->path."/".$this->modelClassName.'.php');
+        return base_path($this->path . "/" . $this->modelClassName . '.php');
     }
 
     /**
@@ -139,7 +144,7 @@ class ModelCreator
      * Replace soft-deletes dummy.
      *
      * @param string $stub
-     * @param bool   $softDeletes
+     * @param bool $softDeletes
      *
      * @return $this
      */
@@ -197,7 +202,7 @@ class ModelCreator
      * Replace timestamps dummy.
      *
      * @param string $stub
-     * @param bool   $timestamps
+     * @param bool $timestamps
      *
      * @return $this
      */
@@ -229,6 +234,6 @@ class ModelCreator
      */
     public function getStub()
     {
-        return __DIR__.'/stubs/model2.stub';
+        return __DIR__ . '/stubs/model2.stub';
     }
 }

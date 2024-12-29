@@ -30,8 +30,13 @@ class ControllerCreator
     public function __construct($config, $files = null)
     {
         $this->files = $files ?: app('files');
-        $this->controllerNamespace = $config->base_namespace."\\Controller\\Admin";
-        $this->controllerPath = $config->base_path."/src/Controller/Admin";
+        if ($config->controller_namespace) {
+            $this->controllerNamespace = $config->controller_namespace;
+            $this->controllerPath = $config->controller_path;
+        } else {
+            $this->controllerNamespace = $config->base_namespace . "\\Controller\\Admin";
+            $this->controllerPath = $config->base_path . "/src/Controller/Admin";
+        }
 
         $this->config = $config;
     }
@@ -41,18 +46,18 @@ class ControllerCreator
      *
      * @param string $tableName
      *
-     * @param array  $fields
-     * @param null   $title
+     * @param array $fields
+     * @param null $title
      * @return string
      * @throws \Exception
      */
-    public function create($tableName, $fields = [],$title=null)
+    public function create($tableName, $fields = [], $title = null)
     {
 
         $fieldNames = array_pluck($fields, "name");
 
 
-        $controllerClassName = studly_case(camel_case(str_singular($tableName)))."Controller";
+        $controllerClassName = studly_case(camel_case(str_singular($tableName))) . "Controller";
         $modelClassName = studly_case(camel_case(str_singular($tableName)));
         $path = $this->getpath($controllerClassName);
 
@@ -63,7 +68,7 @@ class ControllerCreator
         $stub = $this->files->get($this->getStub());
 
         $this->files->put($path, $this->replace($stub, $controllerClassName, $modelClassName,
-            $tableName,$fieldNames,$title));
+            $tableName, $fieldNames, $title));
 
         return $path;
     }
@@ -79,7 +84,7 @@ class ControllerCreator
      * @param        $title
      * @return string
      */
-    protected function replace($stub, $controllerNameClass, $modelNameClass, $tableName,$fieldNames,$title)
+    protected function replace($stub, $controllerNameClass, $modelNameClass, $tableName, $fieldNames, $title)
     {
         return str_replace(
             [
@@ -92,11 +97,11 @@ class ControllerCreator
                 'DummyFormConfig',
             ],
             [
-                $this->config->base_namespace."\\Data\\".class_basename($modelNameClass),
+                $this->config->base_namespace . "\\Data\\" . class_basename($modelNameClass),
                 class_basename($modelNameClass),
                 $controllerNameClass,
                 $this->controllerNamespace,
-                $title?:$tableName,
+                $title ?: $tableName,
                 $this->gridGenerator($fieldNames),
                 $this->formGenerator($fieldNames),
             ],
@@ -114,7 +119,7 @@ class ControllerCreator
      */
     public function getPath($modelClassName)
     {
-        return base_path($this->controllerPath."/".$modelClassName.'.php');
+        return base_path($this->controllerPath . "/" . $modelClassName . '.php');
     }
 
     /**
@@ -124,9 +129,8 @@ class ControllerCreator
      */
     public function getStub()
     {
-        return __DIR__.'/stubs/controller2.stub';
+        return __DIR__ . '/stubs/controller2.stub';
     }
-
 
 
     /**
@@ -139,7 +143,7 @@ class ControllerCreator
     {
         $temp = "";
         foreach ($fieldNames as $fieldName) {
-            $temp.='$grid->'.$fieldName.'();'.PHP_EOL;
+            $temp .= '$grid->' . $fieldName . '();' . PHP_EOL;
         }
         return $temp;
 
@@ -155,7 +159,7 @@ class ControllerCreator
     {
         $temp = "";
         foreach ($fieldNames as $fieldName) {
-            $temp.='$form->text("'.$fieldName.'");'.PHP_EOL;
+            $temp .= '$form->text("' . $fieldName . '");' . PHP_EOL;
         }
         return $temp;
     }
